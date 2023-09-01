@@ -1,16 +1,10 @@
 <script>
-	let textArea;
+	let textarea;
+	let lines = 1;
 
-	let content = '';
-
-	const handleKeyDown = (event) => {
-		if (event.shiftkey && event.keyCode == 13) {
-			content = '';
-			console.log('enter');
-		}
-		let lineCount = (content.match(/\n/g) || []).length;
-		console.log(lineCount);
-		textArea.style.height = `${lineCount * 20 + 50}px`;
+	const calculateLines = () => {
+		lines = textarea.value.split('\n').length + 1;
+		console.log(lines);
 	};
 </script>
 
@@ -18,12 +12,11 @@
 	class="flex items-center h-fit w-full text-left rounded-lg bg-transparent border px-4 py-2 focus-within:border-white text-neutral-900 border-neutral-600 dark:text-neutral-100"
 >
 	<textarea
-		bind:value={content}
-		bind:this={textArea}
-		on:keydown={handleKeyDown}
-		class="bg-transparent outline-none w-full h-fit"
+		bind:this={textarea}
+		class="bg-transparent outline-none w-full"
 		placeholder="Enter a prompt or type &quot;/&quot; to select a prompt..."
-		style="resize: none; max-height: 300px; overflow: hidden; bottom: 64px;"
+		on:input={calculateLines}
+		style="height: {lines}em; resize: none; max-height: 300px; min-height:2em; bottom: 64px;"
 	/>
 	<button class="btn variant-outline p-2 rounded-md h-fit variant-soft-surface"
 		><svg
